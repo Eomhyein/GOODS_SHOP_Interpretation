@@ -1,7 +1,7 @@
 // schemas/product.schema.js
 // mongoose 가져오기
-import mongoose from "mongoose";
-import { PRODUCT_STATUS } from "../constansts/product.constant.js";
+import mongoose from 'mongoose';
+import { PRODUCT_STATUS } from '../constants/product.constant.js';
 
 // 요구사항
 // -id:string:상품 ID
@@ -14,35 +14,36 @@ import { PRODUCT_STATUS } from "../constansts/product.constant.js";
 // -updatedAt:Date:수정 일시
 
 // 스키마 작성
-const productSchema = new mongoose.Schema({
-  name : {
-    type: String,
-    required : true,
-    unique: true,
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    manager: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      select: false, // 몽고디비에서 find 명령해서 조회할 때 자동적으로 선택되지 않게 한다.
+    },
+    status: {
+      type: String,
+      required: true,
+      enum: Object.values(PRODUCT_STATUS),
+      default: PRODUCT_STATUS.FOR_SALE,
+    },
   },
-  description : {
-    type: String,
-    required : true,
-  },
-  manager : {
-    type: String,
-    required : true,
-  },
-  password : {
-    type: String,
-    required : true,
-    select: false, // 몽고디비에서 find 명령해서 조회할 때 자동적으로 선택되지 않게 한다.
-  },
-  status : {
-    type: String,
-    required : false,
-    enum: Object.values(PRODUCT_STATUS),
-    default: PRODUCT_STATUS.FOR_SALE,
-  },
-}, 
-  {timestamps: true, toJSON: {virtuals: true}}
+  { timestamps: true, toJSON: { virtuals: true } },
 );
 
 // 스키마 통해 모델 구현
 // 모델 외부로 보내기
-export default mongoose.model('Product', productSchema);
+export const Product = mongoose.model('Product', productSchema);
